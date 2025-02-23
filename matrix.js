@@ -11,17 +11,41 @@ enterButton.addEventListener("click",function(){
   matrixCanvas.width = window.innerWidth;
   matrixCanvas.height = window.innerHeight;
 
-  // removing button and paragraph
+// removing button and paragraph
   enterButton.style.display = "none";
   introText.style.display = "none";
 
-  //setting variables for the matrix rain effect.
+//setting variables for the matrix rain effect.
   const matrixContext = matrixCanvas.getContext("2d");
   const letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-  const fontsize = 16;
-  const columns = Math.floor(matrixCanvas.width / fontsize);
+  const fontSize = 20;
+  const columns = Math.floor(matrixCanvas.width / fontSize);
   const drop = new Array(columns).fill(0);
 
-  //creating matrix effect 
+//creating matrix effect 
+  function matrixRainEffect() {
+    matrixContext.fillStyle = "rgb(0, 0, 0, 0.05)";
+    matrixContext.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+    matrixContext.fillStyle = "#0F0";
+    matrixContext.font = `${fontSize}px monospace`;
+
+// Loop
+    for( let i = 0; i < drop.length; i++){
+      let randomCharacter = letters[Math.floor(Math.random() * letters.length)];
+      let x = i * fontSize;
+      let y = drop[i] * fontSize;
+
+      matrixContext.fillText(randomCharacter, x, y);
+
+      if(y > matrixCanvas.height && Math.random() > 0.975) {
+        drop[i] = 0;
+      } else {
+        drop[i]++;
+      }
+    };
+  };
+
+  setInterval(matrixRainEffect, 40);
 
 });
